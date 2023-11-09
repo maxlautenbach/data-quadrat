@@ -14,5 +14,6 @@ def preprocess_data(path):
 
     for column in columns[:-3]:
         train[[column]] = scaler.fit_transform(train[[column]])
+        test[[column]] = scaler.fit_transform(test[[column]])
 
     return train, test
