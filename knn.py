@@ -19,7 +19,7 @@ y_test = test_pre.iloc[:, -1]
 
 cols = X_train.columns
 combinations = []
-for i in range(5, 8):
+for i in range(6,7):
     for j in itertools.combinations(cols, i):
         combinations.append(j)
 print(len(combinations))
@@ -32,10 +32,10 @@ for combin in combinations:
     com_X_train = X_train[combi]
     com_X_test = X_test[combi]
 
-    for i in range(100,101):
+    for i in range(1,2):
         #print(i)
         # Create the KNN regressor
-        knn = KNeighborsRegressor(n_neighbors=i)
+        knn = KNeighborsRegressor(n_neighbors=i*50)
 
         # Train the model
         knn.fit(com_X_train, y_train)
@@ -43,23 +43,15 @@ for combin in combinations:
         # Predict the energy consumption for the test data
         y_pred = knn.predict(com_X_test)
 
-        # Calculate the mean squared error
-        mse = mean_squared_error(y_test, y_pred)
-        mae = mean_absolute_error(y_test, y_pred)
-
         # Calculate the root mean squared error
-        rmse = math.sqrt(mse)
+        rmse = math.sqrt(mean_squared_error(y_test, y_pred))
 
-        #print("Mean squared error:", mse)
-        #print("Mean absolute error:", mae)
-        #print("Root mean squared error:", rmse)
-        #print(lowest)
         if rmse < lowest['num'] :
             lowest['num'] = rmse
             lowest['i'] = i
             lowest['comb'] = combi
-    print(lowest['num']) 
+    print(lowest) 
 print(lowest) 
 out = open("out.txt","w")
-out.write(lowest)
+out.write(str(lowest))
 out.close()
