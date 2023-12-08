@@ -5,17 +5,21 @@ from sklearn.preprocessing import *
 
 
 def preprocess_data(path):
-    energy_consumption_data = pd.read_csv(path, index_col=0)
+    # Load collected data
+    residual_load_data = pd.read_csv(path, index_col=0)
 
-    energy_consumption_data = energy_consumption_data.replace(-999, np.NaN).dropna()
+    # Split into train and test split
+    train, test = train_test_split(residual_load_data, shuffle=False, test_size=0.2)
 
-    train, test = train_test_split(energy_consumption_data, shuffle=False, test_size=0.2)
-    columns = list(energy_consumption_data.columns)
+    # Delete missing values
+    columns = list(residual_load_data.columns)
+    train = train.replace(-999, np.NaN)
+    train = train.dropna()
+
+    # Normalize data
     scaler = MinMaxScaler()
-
     for column in columns[:-3]:
-        scaler.fit(train[[column]])
-        train[[column]] = scaler.transform(train[[column]])
-        test[[column]] = scaler.transform(test[[column]])
+        train[[column]] = scaler.fit_transform(train[[column]])
+        test[[column]] = scaler.fit_transform(test[[column]])
 
     return train, test
