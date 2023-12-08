@@ -8,7 +8,7 @@ import numpy as np
 import data_preprocessing
 
 # Load the preprocessed data
-train_pre, test_pre = data_preprocessing.preprocess_data("Energy Consumption Dataset.csv")
+train_pre, test_pre = data_preprocessing.preprocess_data("Residual Load Dataset.csv")
 
 # Split the data into features and target
 X_train = train_pre.iloc[:, :-1]
@@ -40,7 +40,7 @@ for combin in combinations:
         # Train the model
         knn.fit(com_X_train, y_train)
 
-        # Predict the energy consumption for the test data
+        # Predict the Residual Load for the test data
         y_pred = knn.predict(com_X_test)
 
         # Calculate the root mean squared error
